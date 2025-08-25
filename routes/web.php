@@ -22,6 +22,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         GeneralSettingController::class,
         'index'
     ])->name('general-settings');
+    Route::post('general-settings', [
+        GeneralSettingController::class,
+        'store'
+    ])->name('general-settings.store');
+    Route::put('general-settings/{generalSetting}', [
+        GeneralSettingController::class,
+        'update'
+    ])->name('general-settings.update');
+    Route::delete('general-settings/{generalSetting}', [
+        GeneralSettingController::class,
+        'destroy'
+    ])->name('general-settings.destroy');
 });
 
 require __DIR__ . '/settings.php';
