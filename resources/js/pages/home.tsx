@@ -181,19 +181,19 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               <div className="text-center">
                 <div className="text-4xl font-bold text-rt-primary mb-2">150+</div>
-                <div className="text-rt-text/70">Kepala Keluarga</div>
+                <div className="">Kepala Keluarga</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-rt-accent mb-2">500+</div>
-                <div className="text-rt-text/70">Total Warga</div>
+                <div className="">Total Warga</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-rt-primary mb-2">25+</div>
-                <div className="text-rt-text/70">Program Kegiatan</div>
+                <div className="">Program Kegiatan</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-rt-accent mb-2">10+</div>
-                <div className="text-rt-text/70">Tahun Berdiri</div>
+                <div className="">Tahun Berdiri</div>
               </div>
             </div>
           </div>
