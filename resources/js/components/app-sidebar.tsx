@@ -13,6 +13,11 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'General Settings',
+        href: '/general-settings',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

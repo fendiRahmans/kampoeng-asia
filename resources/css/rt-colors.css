@@ -1,0 +1,152 @@
+/* RT color variables and minimal utility classes to ensure availability in production build */
+:root {
+  --rt-primary: hsl(0 72.2% 50.6%);
+  --rt-secondary: hsl(50.5 98.0% 63.5%);
+  --rt-accent: hsl(0 73.7% 41.8%);
+  --rt-background: hsl(48.0 100.0% 96.1%);
+  --rt-text: hsl(215.0 27.9% 16.9%);
+}
+
+/* Utilities that mirror Tailwind naming used in templates */
+.bg-rt-primary {
+  background-color: var(--rt-primary) !important
+}
+
+.bg-rt-primary\/10 {
+  background-color: color-mix(in srgb, var(--rt-primary) 10%, transparent) !important
+}
+
+.bg-rt-secondary\/20 {
+  background-color: color-mix(in srgb, var(--rt-secondary) 20%, transparent) !important
+}
+
+.bg-rt-accent {
+  background-color: var(--rt-accent) !important
+}
+
+.bg-rt-background {
+  background-color: var(--rt-background) !important
+}
+
+.text-rt-text {
+  color: var(--rt-text)
+}
+
+.text-rt-text\/70 {
+  color: color-mix(in srgb, var(--rt-text) 70%, transparent)
+}
+
+.text-rt-secondary\/80 {
+  color: color-mix(in srgb, var(--rt-secondary) 80%, transparent) !important
+}
+
+.from-rt-primary {
+  --tw-gradient-from: var(--rt-primary);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+}
+
+.via-rt-accent {
+  --tw-gradient-via: var(--rt-accent);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to)
+}
+
+.to-rt-primary {
+  --tw-gradient-to: var(--rt-primary);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+}
+
+.from-rt-primary\/10 {
+  --tw-gradient-from: color-mix(in srgb, var(--rt-primary) 10%, transparent);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+}
+
+.from-rt-primary\/80 {
+  --tw-gradient-from: color-mix(in srgb, var(--rt-primary) 80%, transparent);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+}
+
+.via-rt-secondary\/20 {
+  --tw-gradient-via: color-mix(in srgb, var(--rt-secondary) 20%, transparent);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to)
+}
+
+.via-rt-accent\/30 {
+  --tw-gradient-via: color-mix(in srgb, var(--rt-accent) 30%, transparent);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to)
+}
+
+.to-rt-primary\/10 {
+  --tw-gradient-to: color-mix(in srgb, var(--rt-primary) 10%, transparent);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+}
+
+.to-rt-primary\/20 {
+  --tw-gradient-to: color-mix(in srgb, var(--rt-primary) 20%, transparent);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+}
+
+.border-rt-secondary\/30 {
+  border-color: color-mix(in srgb, var(--rt-secondary) 30%, transparent) !important
+}
+
+/* Explicit gradient helpers to avoid relying on many small utility classes */
+.hero-gradient {
+  background-image: linear-gradient(135deg,
+      color-mix(in srgb, var(--rt-primary) 80%, transparent) 0%,
+      color-mix(in srgb, var(--rt-accent) 30%, transparent) 50%,
+      color-mix(in srgb, var(--rt-primary) 20%, transparent) 100%) !important;
+}
+
+.banner-gradient {
+  background-image: linear-gradient(90deg,
+      color-mix(in srgb, var(--rt-primary) 20%, transparent) 0%,
+      color-mix(in srgb, var(--rt-secondary) 20%, transparent) 50%,
+      color-mix(in srgb, var(--rt-primary) 20%, transparent) 100%) !important;
+}
+
+/* Fallback for older browsers that don't support color-mix */
+@supports not (color: color-mix(in srgb, red 50%, transparent)) {
+  .bg-rt-primary\/10 {
+    background-color: rgba(220, 38, 38, 0.1) !important
+  }
+
+  .bg-rt-secondary\/20 {
+    background-color: rgba(253, 224, 71, 0.2) !important
+  }
+
+  .text-rt-text\/70 {
+    color: rgba(31, 41, 55, 0.7)
+  }
+
+  .text-rt-secondary\/80 {
+    color: rgba(253, 224, 71, 0.8) !important
+  }
+
+  .from-rt-primary\/10 {
+    --tw-gradient-from: rgba(220, 38, 38, 0.1)
+  }
+
+  .from-rt-primary\/80 {
+    --tw-gradient-from: rgba(220, 38, 38, 0.8)
+  }
+
+  .via-rt-secondary\/20 {
+    --tw-gradient-via: rgba(253, 224, 71, 0.2)
+  }
+
+  .via-rt-accent\/30 {
+    --tw-gradient-via: rgba(185, 28, 28, 0.3)
+  }
+
+  .to-rt-primary\/10 {
+    --tw-gradient-to: rgba(220, 38, 38, 0.1)
+  }
+
+  .to-rt-primary\/20 {
+    --tw-gradient-to: rgba(220, 38, 38, 0.2)
+  }
+
+  .border-rt-secondary\/30 {
+    border-color: rgba(253, 224, 71, 0.3) !important
+  }
+}

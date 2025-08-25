@@ -7,9 +7,11 @@ export default function LandingFooterLayout() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-rt-primary to-rt-accent rounded-lg flex items-center justify-center">
-                <span className=" font-bold text-sm">RT</span>
-              </div>
+              <img
+                src="/images/logo-kampoeng-asia.png"
+                alt="Logo"
+                className="w-15 h-15"
+              />
               <div>
                 <h3 className="text-lg font-bold">RT 01 RW 23</h3>
                 <p className="text-gray-400 text-sm">Kemirisewu</p>

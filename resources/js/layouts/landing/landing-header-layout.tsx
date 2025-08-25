@@ -22,17 +22,19 @@ export default function LandingHeaderLayout() {
   };
 
   return (
-    <header className="shadow-sm border-b border-rt-primary/20 sticky top-0 z-50 bg-white dark:bg-black backdrop-blur-3xl bg-opacity-60">
+    <header className="shadow-sm border-b border-rt-primary/20 sticky top-0 z-50 bg-white dark:bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-rt-primary to-rt-accent rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">RT</span>
-              </div>
+              <img
+                src="/images/logo-kampoeng-asia.png"
+                alt="Logo"
+                className="w-15 h-15"
+              />
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-rt-text">Kampoeng Asean</h1>
-                <p className="text-sm text-rt-text/70">RT 01 RW 23</p>
+                <h1 className="text-xl font-bold text-rt-text dark:!text-white">Kampoeng Asia</h1>
+                <p className="text-sm text-rt-text/70 dark:!text-white">RT 01 RW 23</p>
               </div>
             </Link>
           </div>

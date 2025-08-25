@@ -1,9 +1,18 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { RTInfo } from "@/interfaces";
 import LandingLayout from "@/layouts/landing-layout";
+import { usePage } from "@inertiajs/react";
 import { Heart, Leaf, Shield, Users } from "lucide-react";
 
+type Setting = { id: number; key: string; value: string };
+type Props = { settings: Setting[] };
 export default function HomePage() {
+
+  const { settings } = usePage<Props>().props;
+
+  const siteTitle = settings.find(s => s.key === 'site_title')?.value ?? 'Site Title';
+  const siteAddress = settings.find(s => s.key === 'site_address')?.value ?? 'Site Address';
+  const siteDescription = settings.find(s => s.key === 'site_description')?.value ?? 'Site Description';
 
   const rtInfo: RTInfo = {
     name: 'RT 01 RW 23 Kemirisewu',
@@ -53,22 +62,24 @@ export default function HomePage() {
     <LandingLayout>
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-rt-primary via-rt-accent to-rt-primary  py-20">
+        <section className="bg-gradient-to-br from-rt-primary/80 via-rt-accent/30 to-rt-primary/20 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <div className="flex justify-center mb-6">
-                <div className="w-20 h-20 bg-rt-secondary/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <span className="text-3xl font-bold">RT</span>
-                </div>
+                <img
+                  src="/images/logo-kampoeng-asia.png"
+                  alt="Logo"
+                  className="w-xs h-w-xs"
+                />
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                {rtInfo.name}
+                {siteTitle}
               </h1>
               <p className="text-xl md:text-2xl mb-8">
-                {rtInfo.address}
+                {siteAddress}
               </p>
               <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-                {rtInfo.description}
+                {siteDescription}
               </p>
             </div>
           </div>
@@ -76,7 +87,7 @@ export default function HomePage() {
 
         {/* Sections */}
         {/* Banner Highlight */}
-        <section className="py-16 bg-gradient-to-r from-rt-primary/10 via-rt-secondary/20 to-rt-primary/10">
+        <section className="py-16 banner-gradient">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1">
@@ -128,13 +139,13 @@ export default function HomePage() {
         </section>
 
         {/* Sections */}
-        <section className="py-20 bg-rt-background">
+        <section className="py-20 bg-rt-secondary/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-rt-text mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-rt-text dark:!text-white mb-4">
                 Visi & Misi RT 01 RW 23
               </h2>
-              <p className="text-lg text-rt-text/70 max-w-2xl mx-auto">
+              <p className="text-lg text-rt-text/70 dark:!text-white max-w-2xl mx-auto">
                 Membangun lingkungan yang harmonis dengan mengedepankan empat pilar utama
               </p>
             </div>
@@ -150,10 +161,10 @@ export default function HomePage() {
                       <div className={`w-16 h-16 bg-gradient-to-br ${colorClass} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                         <IconComponent className="w-8 h-8 " />
                       </div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:!text-white mb-4">
                         {section.title}
                       </h3>
-                      <p className="text-rt-text/70 leading-relaxed">
+                      <p className="text-rt-text/70 leading-relaxed dark:!text-white">
                         {section.description}
                       </p>
                     </CardContent>
