@@ -37,38 +37,61 @@ export default function GeneralSetting() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSetting, setSelectedSetting] = useState<Setting | null>(null);
 
+  // allow value to be either a string (regular settings) or a FileList (site_logo)
   const schema = z.object({
     key: z.string().min(2).max(100),
-    value: z.string().min(2).max(100),
+    value: z.any().optional(),
   })
 
   type Schema = z.infer<typeof schema>
 
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
+    defaultValues: { key: '', value: '' }
   })
 
-  const { register, handleSubmit, formState, reset } = form
+  const { register, handleSubmit, formState, reset, watch, setValue } = form
+
+  const watchedKey = watch('key')
 
   const { errors } = formState
 
   const onSubmit = async (data: Schema) => {
     try {
       setIsLoading(true)
+      const formData = new FormData()
+      formData.append('key', data.key)
+
+      // if key is site_logo, value is expected to be a FileList (from input[type=file])
+      if (data.key === 'site_logo') {
+        const fileList = data.value as FileList | undefined
+        if (fileList && fileList.length > 0) {
+          formData.append('value', fileList[0])
+        }
+        // if no file provided during update, do not append 'value' so backend keeps existing path
+      } else {
+        // normal string value
+        formData.append('value', data.value as string)
+      }
+
       if (selectedSetting) {
-        const res = await axios.post(`/general-settings/${selectedSetting.id}`, {
-          ...data,
-          _method: 'PUT'
+        // For Laravel PUT via POST, include _method in FormData
+        formData.append('_method', 'PUT')
+
+        const res = await axios.post(`/general-settings/${selectedSetting.id}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
         })
-        console.log(res);
+
         if (res.status === 200) {
           toast.success("Setting updated successfully.")
           onClose()
           Inertia.reload()
         }
       } else {
-        const res = await axios.post('/general-settings', data)
-        console.log(res);
+        const res = await axios.post('/general-settings', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+
         if (res.status === 200) {
           toast.success("Setting created successfully.")
           onClose()
@@ -135,8 +158,9 @@ export default function GeneralSetting() {
                       onClick={() => {
                         reset()
                         setSelectedSetting(setting)
-                        form.setValue("key", setting.key)
-                        form.setValue("value", setting.value)
+                        setValue("key", setting.key)
+                        // for string values we can set the value; for file-based keys we leave file input empty
+                        setValue("value", setting.value)
                         setOpen(true)
                       }}
                     >
@@ -182,12 +206,28 @@ export default function GeneralSetting() {
                   <Label>
                     Value
                   </Label>
-                  <Textarea
-                    {...register("value")}
-                    placeholder="Enter value"
-                    error={!!errors.value}
-                    msgError={errors.value?.message}
-                  />
+                  {watchedKey === 'site_logo' ? (
+                    <div>
+                      <Input
+                        type="file"
+                        accept=".jpg,.jpeg,.png,.svg,image/*"
+                        {...register('value')}
+                      />
+                      {selectedSetting && selectedSetting.key === 'site_logo' && selectedSetting.value && (
+                        <div className="mt-2">
+                          <p className="text-sm">Current logo preview:</p>
+                          <img src={`/storage/${selectedSetting.value}`} alt="site logo" className="h-16 mt-1" />
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Textarea
+                      {...register("value")}
+                      placeholder="Enter value"
+                      error={!!errors.value}
+                      msgError={!!errors.value?.message}
+                    />
+                  )}
                 </div>
                 <div className="w-full">
                   <Button type="submit" className="w-full mt-4" isLoading={isLoading}>

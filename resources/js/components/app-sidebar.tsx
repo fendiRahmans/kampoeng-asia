@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, LayoutGrid, Settings, Settings2, User } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -16,16 +16,21 @@ const mainNavItems: NavItem[] = [
     {
         title: 'General Settings',
         href: '/general-settings',
-        icon: LayoutGrid,
+        icon: Settings,
     },
+    {
+        title: 'User Settings',
+        href: '/user-settings',
+        icon: User,
+    },
+    {
+        title: 'Highlight Settings',
+        href: '/highlight-settings',
+        icon: Settings2,
+    }
 ];
 
 const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
     {
         title: 'Documentation',
         href: 'https://laravel.com/docs/starter-kits#react',

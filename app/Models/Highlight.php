@@ -4,18 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 
-class GeneralSetting extends Model
+class Highlight extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'key',
-        'value',
-        'created_by',
-        'updated_by'
-    ];
+    protected $fillable = ['title', 'description', 'image', 'pinned', 'created_by', 'updated_by'];
 
     /**
      * Get the user who created this setting.

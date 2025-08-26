@@ -1,8 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { RTInfo } from "@/interfaces";
 import LandingLayout from "@/layouts/landing-layout";
 import { usePage } from "@inertiajs/react";
 import { Heart, Leaf, Shield, Users } from "lucide-react";
+import Autoplay from "embla-carousel-autoplay"
 
 type Setting = { id: number; key: string; value: string };
 type Props = { settings: Setting[] };
@@ -90,22 +92,56 @@ export default function HomePage() {
         <section className="py-16 banner-gradient">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="order-2 lg:order-1">
-                <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-                  <img
-                    src="https://images.pexels.com/photos/1546168/pexels-photo-1546168.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Kegiatan RT 01 RW 23 Kemirisewu"
-                    className="w-full h-64 lg:h-80 object-cover"
-                  />
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-rt-text mb-2">
-                      Kegiatan Gotong Royong
-                    </h3>
-                    <p className="text-rt-text/70 text-sm">
-                      Warga RT 01 RW 23 bergotong royong membersihkan lingkungan untuk menciptakan kampung yang bersih dan sehat.
-                    </p>
-                  </div>
-                </div>
+              <div className="order-2 lg:order-1 rounded-2xl overflow-hidden">
+                <Carousel
+                  opts={{
+                    loop: true,
+                  }}
+                  plugins={[
+                    Autoplay({
+                      delay: 2500,
+                      stopOnInteraction: false,
+                    })
+                  ]}
+                >
+                  <CarouselContent>
+                    <CarouselItem>
+                      <div className="bg-white rounded-2xl overflow-hidden">
+                        <img
+                          src="https://images.pexels.com/photos/1546168/pexels-photo-1546168.jpeg?auto=compress&cs=tinysrgb&w=800"
+                          alt="Kegiatan RT 01 RW 23 Kemirisewu"
+                          className="w-full h-64 lg:h-80 object-cover"
+                        />
+                        <div className="p-6">
+                          <h3 className="text-xl font-bold text-rt-text mb-2">
+                            Kegiatan Gotong Royong
+                          </h3>
+                          <p className="text-rt-text/70 text-sm">
+                            Warga RT 01 RW 23 bergotong royong membersihkan lingkungan untuk menciptakan kampung yang bersih dan sehat.
+                          </p>
+                        </div>
+                      </div>
+                    </CarouselItem>
+                    <CarouselItem>
+                      <div className="bg-white rounded-2xl overflow-hidden">
+                        <img
+                          src="https://images.pexels.com/photos/1546168/pexels-photo-1546168.jpeg?auto=compress&cs=tinysrgb&w=800"
+                          alt="Kegiatan RT 01 RW 23 Kemirisewu"
+                          className="w-full h-64 lg:h-80 object-cover"
+                        />
+                        <div className="p-6">
+                          <h3 className="text-xl font-bold text-rt-text mb-2">
+                            Kegiatan Gotong Royong
+                          </h3>
+                          <p className="text-rt-text/70 text-sm">
+                            Warga RT 01 RW 23 bergotong royong membersihkan lingkungan untuk menciptakan kampung yang bersih dan sehat.
+                          </p>
+                        </div>
+                      </div>
+                    </CarouselItem>
+                  </CarouselContent>
+                </Carousel>
+
               </div>
 
               <div className="order-1 lg:order-2">
