@@ -10,6 +10,7 @@ class VisionMission extends Model
         'title',
         'description',
         'icon',
+        'color',
         'created_by',
         'updated_by',
     ];

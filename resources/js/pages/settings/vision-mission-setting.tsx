@@ -27,7 +27,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   }
 ];
 
-type VisionMission = { id: number; title: string; description: string; icon?: string };
+type VisionMission = { id: number; title: string; description: string; icon?: string, color?: string };
 type Props = { visionMissions: VisionMission[] };
 
 export default function VisionMissionSetting() {
@@ -41,13 +41,13 @@ export default function VisionMissionSetting() {
     title: z.string().min(1).max(255),
     description: z.string().min(1),
     icon: z.any().optional(),
+    color: z.string().min(1).max(255).optional()
   })
 
   type Schema = z.infer<typeof schema>
 
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
-    defaultValues: { title: '', description: '', icon: '' }
   })
 
   const { register, handleSubmit, formState, reset, setValue, watch } = form
@@ -59,10 +59,14 @@ export default function VisionMissionSetting() {
       const formData = new FormData()
       formData.append('title', data.title)
       formData.append('description', data.description)
-
       const fileList = data.icon as FileList | undefined
+
       if (fileList && fileList.length > 0) {
         formData.append('icon', fileList[0])
+      }
+
+      if (data.color) {
+        formData.append('color', data.color)
       }
 
       if (selected) {
@@ -133,6 +137,7 @@ export default function VisionMissionSetting() {
               <TableHead>Title</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Icon</TableHead>
+              <TableHead>Color</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -140,10 +145,21 @@ export default function VisionMissionSetting() {
             {visionMissions?.map((vm) => (
               <TableRow key={vm.id}>
                 <TableCell>{vm.title}</TableCell>
-                <TableCell className="max-w-xl break-words">{vm.description}</TableCell>
+                <TableCell className="max-w-xl break-words whitespace-pre-wrap">
+                  {vm.description}
+                </TableCell>
                 <TableCell>
                   {vm.icon ? (
                     <img src={`/storage/${vm.icon}`} alt={vm.title} className="h-10" />
+                  ) : (
+                    <span className="text-sm text-muted-foreground">-</span>
+                  )}
+                </TableCell>
+                <TableCell>
+                  {vm.color ? (
+                    <div className="flex items-center space-x-2">
+                      <span>{vm.color}</span>
+                    </div>
                   ) : (
                     <span className="text-sm text-muted-foreground">-</span>
                   )}
@@ -198,6 +214,10 @@ export default function VisionMissionSetting() {
                       </div>
                     )}
                   </div>
+                </div>
+                <div className="grid gap-2 py-3">
+                  <Label>Color</Label>
+                  <Input {...register('color')} error={!!errors.color} msgError={errors.color?.message} />
                 </div>
                 <div className="w-full">
                   <Button type="submit" className="w-full mt-4" isLoading={isLoading}>

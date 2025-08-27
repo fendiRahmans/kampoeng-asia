@@ -1,15 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { RTInfo } from "@/interfaces";
 import LandingLayout from "@/layouts/landing-layout";
 import { usePage } from "@inertiajs/react";
-import { Heart, Leaf, Shield, Users } from "lucide-react";
-import Autoplay from "embla-carousel-autoplay"
+import Autoplay from "embla-carousel-autoplay";
 
 type Setting = { id: number; key: string; value: string };
 type Highlight = { id: number; title: string; description: string, image: string, pinned: boolean };
 type Achievement = { id: number; title: string; description: string; points: string; icon?: string };
-type VisionMission = { id: number; title: string; description: string; icon?: string };
+type VisionMission = { id: number; title: string; description: string; icon?: string, color?: string };
 type Props = { settings: Setting[], highlights: Highlight[], achievements: Achievement[], visionMissions: VisionMission[] };
 export default function HomePage() {
 
@@ -18,51 +16,6 @@ export default function HomePage() {
   const siteTitle = settings.find(s => s.key === 'site_title')?.value ?? 'Site Title';
   const siteAddress = settings.find(s => s.key === 'site_address')?.value ?? 'Site Address';
   const siteDescription = settings.find(s => s.key === 'site_description')?.value ?? 'Site Description';
-
-  const rtInfo: RTInfo = {
-    name: 'RT 01 RW 23 Kemirisewu',
-    address: 'Kemirisewu, Yogyakarta',
-    description: 'Rukun Tetangga yang mengedepankan nilai-nilai kebersamaan, keamanan, dan kesejahteraan warga.',
-    highlights: [],
-    sections: {
-      agamis: {
-        id: 'agamis',
-        title: 'Agamis',
-        description: 'Membangun kehidupan beragama yang harmonis dengan kegiatan pengajian rutin, peringatan hari besar keagamaan, dan pembinaan akhlak mulia bagi seluruh warga RT.'
-      },
-      sehat: {
-        id: 'sehat',
-        title: 'Sehat',
-        description: 'Menjaga kesehatan warga melalui program posyandu, senam pagi bersama, penyuluhan kesehatan, dan menjaga kebersihan lingkungan RT.'
-      },
-      indah: {
-        id: 'indah',
-        title: 'Indah',
-        description: 'Menciptakan lingkungan yang asri dan indah dengan program penghijauan, penataan taman RT, dan gotong royong kebersihan lingkungan.'
-      },
-      aman: {
-        id: 'aman',
-        title: 'Aman',
-        description: 'Menjamin keamanan dan ketertiban lingkungan melalui sistem ronda malam, CCTV, dan koordinasi dengan pihak keamanan setempat.'
-      }
-    }
-  };
-
-  const sectionIcons = {
-    agamis: Heart,
-    sehat: Shield,
-    indah: Leaf,
-    aman: Users
-  };
-
-  const sectionColors = {
-    agamis: 'from-purple-500 to-pink-500',
-    sehat: 'from-green-500 to-emerald-500',
-    indah: 'from-blue-500 to-cyan-500',
-    aman: 'from-orange-500 to-red-500'
-  };
-
-
   return (
     <LandingLayout>
       <div className="min-h-screen">
@@ -108,40 +61,44 @@ export default function HomePage() {
                   ]}
                 >
                   <CarouselContent>
-                    <CarouselItem>
-                      <div className="bg-white rounded-2xl overflow-hidden">
-                        <img
-                          src="https://images.pexels.com/photos/1546168/pexels-photo-1546168.jpeg?auto=compress&cs=tinysrgb&w=800"
-                          alt="Kegiatan RT 01 RW 23 Kemirisewu"
-                          className="w-full h-64 lg:h-80 object-cover"
-                        />
-                        <div className="p-6">
-                          <h3 className="text-xl font-bold text-rt-text mb-2">
-                            Kegiatan Gotong Royong
-                          </h3>
-                          <p className="text-rt-text/70 text-sm">
-                            Warga RT 01 RW 23 bergotong royong membersihkan lingkungan untuk menciptakan kampung yang bersih dan sehat.
-                          </p>
+                    {highlights.map((highlight) => (
+                      <CarouselItem key={highlight.id}>
+                        <div className="bg-white rounded-2xl overflow-hidden">
+                          <img
+                            src={highlight.image}
+                            alt={highlight.title}
+                            className="w-full h-64 lg:h-80 object-cover"
+                          />
+                          <div className="p-6">
+                            <h3 className="text-xl font-bold text-rt-text mb-2">
+                              {highlight.title}
+                            </h3>
+                            <p className="text-rt-text/70 text-sm">
+                              {highlight.description}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </CarouselItem>
-                    <CarouselItem>
-                      <div className="bg-white rounded-2xl overflow-hidden">
-                        <img
-                          src="https://images.pexels.com/photos/1546168/pexels-photo-1546168.jpeg?auto=compress&cs=tinysrgb&w=800"
-                          alt="Kegiatan RT 01 RW 23 Kemirisewu"
-                          className="w-full h-64 lg:h-80 object-cover"
-                        />
-                        <div className="p-6">
-                          <h3 className="text-xl font-bold text-rt-text mb-2">
-                            Kegiatan Gotong Royong
-                          </h3>
-                          <p className="text-rt-text/70 text-sm">
-                            Warga RT 01 RW 23 bergotong royong membersihkan lingkungan untuk menciptakan kampung yang bersih dan sehat.
-                          </p>
+                      </CarouselItem>
+                    ))}
+                    {!highlights || highlights.length === 0 ? (
+                      <CarouselItem>
+                        <div className="bg-white rounded-2xl overflow-hidden">
+                          <img
+                            src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800"
+                            alt="Kegiatan RT 01 RW 23 Kemirisewu"
+                            className="w-full h-64 lg:h-80 object-cover"
+                          />
+                          <div className="p-6">
+                            <h3 className="text-xl font-bold text-rt-text mb-2">
+                              Belum Ada Highlight
+                            </h3>
+                            <p className="text-rt-text/70 text-sm">
+                              Saat ini belum ada highlight yang ditambahkan. Silakan cek kembali nanti.
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </CarouselItem>
+                      </CarouselItem>
+                    ) : null}
                   </CarouselContent>
                 </Carousel>
 
@@ -153,23 +110,27 @@ export default function HomePage() {
                     🏆 Prestasi Terbaru
                   </h2>
                   <div className="space-y-4">
-                    {rtInfo.highlights.length === 0 ? (
-                      <div className="text-center py-8">
-                        <p className="text-rt-text/70">Belum ada highlight yang ditambahkan</p>
-                      </div>
-                    ) : (
-                      rtInfo.highlights.map((highlight) => (
-                        <div key={highlight.id} className="flex items-center space-x-4 p-4 bg-white/80 rounded-xl">
-                          <div className="w-12 h-12 bg-gradient-to-br from-rt-primary to-rt-accent rounded-full flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">{highlight.icon}</span>
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-rt-text">{highlight.title}</h4>
-                            <p className="text-sm text-rt-text/70">{highlight.description}</p>
-                          </div>
+                    {achievements.map((achievement) => (
+                      <div key={achievement.id} className="flex items-center space-x-4 p-4 bg-white/80 rounded-xl">
+                        <div className="w-12 h-12 bg-gradient-to-br from-rt-primary to-rt-accent rounded-full flex items-center justify-center">
+                          {achievement.icon ? (
+                            <img src={`/storage/${achievement.icon}`} alt={achievement.title} className="w-8 h-8" />
+                          ) :
+                            <span className="text-white font-bold text-sm">{achievement.points}</span>
+                          }
                         </div>
-                      ))
-                    )}
+                        <div>
+                          <h4 className="font-semibold text-rt-text">{achievement.title}</h4>
+                          <p className="text-sm text-rt-text/70">{achievement.description}</p>
+                        </div>
+                      </div>
+                    ))
+                    }
+                    {achievements.length === 0 ? (
+                      <div className="text-center py-8">
+                        <p className="text-rt-text/70">Belum ada prestasi yang ditambahkan</p>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -193,7 +154,7 @@ export default function HomePage() {
               {visionMissions && visionMissions.length > 0 ? visionMissions.map((section) => (
                 <Card key={section.id} className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
                   <CardContent className="p-6">
-                    <div className={`w-16 h-16 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    <div className={`w-16 h-16 bg-gradient-to-br ${section.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                       <img src={section.icon ? `/storage/${section.icon}` : '/images/default-icon.png'} alt={section.title} className="w-8 h-8" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 dark:!text-white mb-4">
@@ -204,7 +165,16 @@ export default function HomePage() {
                     </p>
                   </CardContent>
                 </Card>
-              )) : null}
+              )) :
+                (
+                  <Card className="col-span-1 md:col-span-2 lg:col-span-4">
+                    <CardContent className="p-6 text-center">
+                      <p className="text-rt-text/70 dark:!text-white">
+                        Tidak ada visi/misi yang tersedia.
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
             </div>
           </div>
         </section>
@@ -214,19 +184,27 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="text-4xl font-bold text-rt-primary mb-2">150+</div>
+                <div className="text-4xl font-bold text-rt-primary mb-2">
+                  {settings?.find(s => s.key === 'info_head_of_family')?.value ?? '0+'}
+                </div>
                 <div className="">Kepala Keluarga</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-rt-accent mb-2">500+</div>
+                <div className="text-4xl font-bold text-rt-accent mb-2">
+                  {settings?.find(s => s.key === 'info_total_population')?.value ?? '0+'}
+                </div>
                 <div className="">Total Warga</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-rt-primary mb-2">25+</div>
+                <div className="text-4xl font-bold text-rt-primary mb-2">
+                  {settings?.find(s => s.key === 'info_activity_program')?.value ?? '0+'}
+                </div>
                 <div className="">Program Kegiatan</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-rt-accent mb-2">10+</div>
+                <div className="text-4xl font-bold text-rt-accent mb-2">
+                  {settings?.find(s => s.key === 'info_established_since')?.value ?? '0+'}
+                </div>
                 <div className="">Tahun Berdiri</div>
               </div>
             </div>

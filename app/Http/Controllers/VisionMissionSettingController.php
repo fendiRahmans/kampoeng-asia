@@ -25,6 +25,7 @@ class VisionMissionSettingController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'icon' => 'nullable|file|mimes:jpg,jpeg,png,svg|max:2048',
+            'color' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('icon')) {
@@ -47,6 +48,7 @@ class VisionMissionSettingController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'icon' => 'nullable|file|mimes:jpg,jpeg,png,svg|max:2048',
+            'color' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('icon')) {
