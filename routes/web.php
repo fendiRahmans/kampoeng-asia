@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AchievementSettingController;
 use App\Http\Controllers\GeneralSettingController;
 use App\Http\Controllers\HighlightSettingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VisionMissionSettingController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -81,6 +83,42 @@ Route::middleware(['auth', 'verified'])->group(function () {
         HighlightSettingController::class,
         'destroy'
     ])->name('highlight-settings.destroy');
+
+    // Achievement Settings
+    Route::get('achievement-settings', [
+        AchievementSettingController::class,
+        'index'
+    ])->name('achievement-settings');
+    Route::post('achievement-settings', [
+        AchievementSettingController::class,
+        'store'
+    ])->name('achievement-settings.store');
+    Route::put('achievement-settings/{achievement}', [
+        AchievementSettingController::class,
+        'update'
+    ])->name('achievement-settings.update');
+    Route::delete('achievement-settings/{achievement}', [
+        AchievementSettingController::class,
+        'destroy'
+    ])->name('achievement-settings.destroy');
+
+    // Vision & Mission Settings
+    Route::get('vision-mission-settings', [
+        VisionMissionSettingController::class,
+        'index'
+    ])->name('vision-mission-settings');
+    Route::post('vision-mission-settings', [
+        VisionMissionSettingController::class,
+        'store'
+    ])->name('vision-mission-settings.store');
+    Route::put('vision-mission-settings/{visionMission}', [
+        VisionMissionSettingController::class,
+        'update'
+    ])->name('vision-mission-settings.update');
+    Route::delete('vision-mission-settings/{visionMission}', [
+        VisionMissionSettingController::class,
+        'destroy'
+    ])->name('vision-mission-settings.destroy');
 });
 
 require __DIR__ . '/settings.php';

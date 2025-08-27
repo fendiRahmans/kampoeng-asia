@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, LayoutGrid, Settings, Settings2, User } from 'lucide-react';
+import { BookOpen, LayoutGrid, ListCheck, Settings, Settings2, Trophy, User } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -27,7 +27,17 @@ const mainNavItems: NavItem[] = [
         title: 'Highlight Settings',
         href: '/highlight-settings',
         icon: Settings2,
-    }
+    },
+    {
+        title: 'Achievement Settings',
+        href: '/achievement-settings',
+        icon: Trophy,
+    },
+    {
+        title: 'Vision & Mission Settings',
+        href: '/vision-mission-settings',
+        icon: ListCheck,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

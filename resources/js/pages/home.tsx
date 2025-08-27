@@ -7,10 +7,13 @@ import { Heart, Leaf, Shield, Users } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay"
 
 type Setting = { id: number; key: string; value: string };
-type Props = { settings: Setting[] };
+type Highlight = { id: number; title: string; description: string, image: string, pinned: boolean };
+type Achievement = { id: number; title: string; description: string; points: string; icon?: string };
+type VisionMission = { id: number; title: string; description: string; icon?: string };
+type Props = { settings: Setting[], highlights: Highlight[], achievements: Achievement[], visionMissions: VisionMission[] };
 export default function HomePage() {
 
-  const { settings } = usePage<Props>().props;
+  const { settings, highlights, achievements, visionMissions } = usePage<Props>().props;
 
   const siteTitle = settings.find(s => s.key === 'site_title')?.value ?? 'Site Title';
   const siteAddress = settings.find(s => s.key === 'site_address')?.value ?? 'Site Address';
@@ -187,26 +190,21 @@ export default function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {Object.entries(rtInfo.sections).map(([key, section]) => {
-                const IconComponent = sectionIcons[key as keyof typeof sectionIcons];
-                const colorClass = sectionColors[key as keyof typeof sectionColors];
-
-                return (
-                  <Card key={section.id} className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                    <CardContent className="p-6">
-                      <div className={`w-16 h-16 bg-gradient-to-br ${colorClass} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                        <IconComponent className="w-8 h-8 " />
-                      </div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:!text-white mb-4">
-                        {section.title}
-                      </h3>
-                      <p className="text-rt-text/70 leading-relaxed dark:!text-white">
-                        {section.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+              {visionMissions && visionMissions.length > 0 ? visionMissions.map((section) => (
+                <Card key={section.id} className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                  <CardContent className="p-6">
+                    <div className={`w-16 h-16 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      <img src={section.icon ? `/storage/${section.icon}` : '/images/default-icon.png'} alt={section.title} className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:!text-white mb-4">
+                      {section.title}
+                    </h3>
+                    <p className="text-rt-text/70 leading-relaxed dark:!text-white">
+                      {section.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              )) : null}
             </div>
           </div>
         </section>
