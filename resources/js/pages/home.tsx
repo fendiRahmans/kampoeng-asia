@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import LandingLayout from "@/layouts/landing-layout";
+import LandingFooterLayout from "@/layouts/landing/landing-footer-layout";
+import LandingHeaderLayout from "@/layouts/landing/landing-header-layout";
 import { usePage } from "@inertiajs/react";
 import Autoplay from "embla-carousel-autoplay";
 
@@ -17,7 +18,8 @@ export default function HomePage() {
   const siteAddress = settings.find(s => s.key === 'site_address')?.value ?? 'Site Address';
   const siteDescription = settings.find(s => s.key === 'site_description')?.value ?? 'Site Description';
   return (
-    <LandingLayout>
+    <div>
+      <LandingHeaderLayout settings={settings} />
       <div className="min-h-screen">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-rt-primary/80 via-rt-accent/30 to-rt-primary/20 py-20">
@@ -211,6 +213,7 @@ export default function HomePage() {
           </div>
         </section>
       </div>
-    </LandingLayout>
+      <LandingFooterLayout settings={settings} />
+    </div>
   );
 }

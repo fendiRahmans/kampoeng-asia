@@ -1,6 +1,14 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 
-export default function LandingFooterLayout() {
+
+type Setting = { id: number; key: string; value: string };
+export default function LandingFooterLayout(
+  {
+    settings
+  }: {
+    settings: Setting[];
+  }
+) {
   return (
     <footer className="bg-rt-text">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -13,13 +21,16 @@ export default function LandingFooterLayout() {
                 className="w-15 h-15"
               />
               <div>
-                <h3 className="text-lg font-bold">RT 01 RW 23</h3>
-                <p className="text-gray-400 text-sm">Kemirisewu</p>
+                <h3 className="text-lg font-bold">
+                  {settings.find(s => s.key === 'site_name')?.value ?? 'Site Name'}
+                </h3>
+                <p className="text-gray-400 text-sm">
+                  {settings.find(s => s.key === 'site_title')?.value ?? 'Site Title'}
+                </p>
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Rukun Tetangga yang mengedepankan nilai-nilai kebersamaan,
-              keamanan, dan kesejahteraan warga.
+              {settings.find(s => s.key === 'site_description')?.value ?? 'Site Description'}
             </p>
           </div>
 
@@ -29,19 +40,19 @@ export default function LandingFooterLayout() {
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-rt-secondary/80" />
                 <span className="text-gray-400 text-sm">
-                  Kemirisewu, Yogyakarta
+                  {settings.find(s => s.key === 'site_address')?.value ?? 'Site Address'}
                 </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-rt-secondary/80" />
                 <span className="text-gray-400 text-sm">
-                  +62 812-3456-7890
+                  {settings.find(s => s.key === 'info_phone')?.value ?? 'Site Phone'}
                 </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-rt-secondary/80" />
                 <span className="text-gray-400 text-sm">
-                  rt01rw23@kemirisewu.com
+                  {settings.find(s => s.key === 'info_email')?.value ?? 'Site Email'}
                 </span>
               </div>
             </div>

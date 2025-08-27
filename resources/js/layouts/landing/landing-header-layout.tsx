@@ -4,7 +4,14 @@ import { FileText, Home, Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAppearance } from "@/hooks/use-appearance";
 
-export default function LandingHeaderLayout() {
+type Setting = { id: number; key: string; value: string };
+export default function LandingHeaderLayout(
+  {
+    settings
+  }: {
+    settings: Setting[];
+  }
+) {
   const { appearance, updateAppearance } = useAppearance();
   const [isDark, setIsDark] = useState<boolean>(false);
 
@@ -33,8 +40,12 @@ export default function LandingHeaderLayout() {
                 className="w-15 h-15"
               />
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-rt-text dark:!text-white">Kampoeng Asia</h1>
-                <p className="text-sm text-rt-text/70 dark:!text-white">RT 01 RW 23</p>
+                <h1 className="text-xl font-bold text-rt-text dark:!text-white">
+                  {settings.find(s => s.key === 'site_name')?.value ?? 'Site Name'}
+                </h1>
+                <p className="text-sm text-rt-text/70 dark:!text-white">
+                  {settings.find(s => s.key === 'site_title')?.value ?? 'Site Title'}
+                </p>
               </div>
             </Link>
           </div>
@@ -47,7 +58,7 @@ export default function LandingHeaderLayout() {
               </Button>
             </Link>
 
-            <Link href="/dokumentasi">
+            <Link href="/documentation">
               <Button variant="ghost" size="sm" className="flex items-center space-x-2">
                 <FileText className="w-4 h-4" />
                 <span className="hidden sm:inline">Dokumentasi</span>

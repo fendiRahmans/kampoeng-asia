@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AchievementSettingController;
+use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\GeneralSettingController;
 use App\Http\Controllers\HighlightSettingController;
 use App\Http\Controllers\HomeController;
@@ -17,6 +18,11 @@ Route::get('/', [
     HomeController::class,
     'index'
 ])->name('home');
+
+Route::get('documentation', [
+    DocumentationController::class,
+    'index'
+])->name('documentation');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
