@@ -38,6 +38,11 @@ const mainNavItems: NavItem[] = [
         href: '/vision-mission-settings',
         icon: ListCheck,
     },
+    {
+        title: 'Documentation Settings',
+        href: '/documentation-settings',
+        icon: BookOpen,
+    }
 ];
 
 const footerNavItems: NavItem[] = [

@@ -4,16 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VisionMission extends Model
+class Documentation extends Model
 {
-    protected $fillable = [
-        'title',
-        'description',
-        'icon',
-        'color',
-        'created_by',
-        'updated_by',
-    ];
+    protected $fillable = ['title', 'description', 'link', 'created_by', 'updated_by'];
 
     /**
      * Get the user who created this setting.

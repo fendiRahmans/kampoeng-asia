@@ -23,15 +23,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     href: '/dashboard',
   },
   {
-    title: 'General Settings',
-    href: '/general-settings',
+    title: 'Documentation Settings',
+    href: '/documentation-settings',
   }
 ];
 
-type Setting = { id: number; key: string; value: string };
+type Documentation = { id: number; title: string; description: string; link: string };
 type PaginationData = {
   current_page: number;
-  data: Setting[];
+  data: Documentation[];
   first_page_url: string;
   from: number;
   last_page: number;
@@ -48,31 +48,29 @@ type PaginationData = {
   to: number;
   total: number;
 };
-type Props = { settings: PaginationData };
+type Props = { documentations: PaginationData };
 
-export default function GeneralSetting() {
-  const { settings } = usePage<Props>().props;
+export default function DocumentationSetting() {
+  const { documentations } = usePage<Props>().props;
   const [open, setOpen] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedSetting, setSelectedSetting] = useState<Setting | null>(null);
+  const [selectedDocumentation, setSelectedDocumentation] = useState<Documentation | null>(null);
 
-  // allow value to be either a string (regular settings) or a FileList (site_logo)
   const schema = z.object({
-    key: z.string().min(2).max(100),
-    value: z.any().optional(),
+    title: z.string().min(2).max(255),
+    description: z.string().min(1),
+    link: z.string().url(),
   })
 
   type Schema = z.infer<typeof schema>
 
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
-    defaultValues: { key: '', value: '' }
+    defaultValues: { title: '', description: '', link: '' }
   })
 
-  const { register, handleSubmit, formState, reset, watch, setValue } = form
-
-  const watchedKey = watch('key')
+  const { register, handleSubmit, formState, reset } = form
 
   const { errors } = formState
 
@@ -80,107 +78,103 @@ export default function GeneralSetting() {
     try {
       setIsLoading(true)
       const formData = new FormData()
-      formData.append('key', data.key)
+      formData.append('title', data.title)
+      formData.append('description', data.description)
+      formData.append('link', data.link)
 
-      // if key is site_logo, value is expected to be a FileList (from input[type=file])
-      if (data.key === 'site_logo') {
-        const fileList = data.value as FileList | undefined
-        if (fileList && fileList.length > 0) {
-          formData.append('value', fileList[0])
-        }
-        // if no file provided during update, do not append 'value' so backend keeps existing path
-      } else {
-        // normal string value
-        formData.append('value', data.value as string)
-      }
-
-      if (selectedSetting) {
+      if (selectedDocumentation) {
         // For Laravel PUT via POST, include _method in FormData
         formData.append('_method', 'PUT')
 
-        const res = await axios.post(`/general-settings/${selectedSetting.id}`, formData, {
+        const res = await axios.post(`/documentation-settings/${selectedDocumentation.id}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         })
 
         if (res.status === 200) {
-          toast.success("Setting updated successfully.")
+          toast.success("Documentation updated successfully.")
           onClose()
           Inertia.reload()
         }
       } else {
-        const res = await axios.post('/general-settings', formData, {
+        const res = await axios.post('/documentation-settings', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         })
 
         if (res.status === 200) {
-          toast.success("Setting created successfully.")
+          toast.success("Documentation created successfully.")
           onClose()
           Inertia.reload()
         }
       }
     } catch (error) {
-      toast.error("An error occurred while saving the setting.")
+      toast.error("An error occurred while saving the documentation.")
     } finally {
       setIsLoading(false)
     }
   }
+
   const onClose = () => {
     setOpen(false)
-    setSelectedSetting(null)
+    setSelectedDocumentation(null)
     reset()
   }
 
   const onDelete = async () => {
     try {
       setIsLoading(true)
-      const res = await axios.post(`/general-settings/${selectedSetting?.id}`, {
+      const res = await axios.post(`/documentation-settings/${selectedDocumentation?.id}`, {
         _method: 'DELETE'
       })
       if (res.status === 200) {
-        toast.success("Setting deleted successfully.")
+        toast.success("Documentation deleted successfully.")
         Inertia.reload()
       }
     } catch (error) {
-      toast.error("An error occurred while deleting the setting.")
+      toast.error("An error occurred while deleting the documentation.")
     } finally {
       setIsLoading(false)
       setConfirm(false)
     }
   }
 
-
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Head title="General Settings" />
+      <Head title="Documentation Settings" />
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">General Settings</h1>
+          <h1 className="text-2xl font-bold">Documentation Settings</h1>
           <Button onClick={() => setOpen(true)}>
-            + Add New Setting
+            + Add New Documentation
           </Button>
         </div>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Key</TableHead>
-              <TableHead>Value</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Link</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {settings?.data?.map((setting) => (
-              <TableRow key={setting.id}>
-                <TableCell>{setting.key}</TableCell>
-                <TableCell>{setting.value}</TableCell>
+            {documentations?.data?.map((documentation) => (
+              <TableRow key={documentation.id}>
+                <TableCell>{documentation.title}</TableCell>
+                <TableCell>{documentation.description}</TableCell>
+                <TableCell>
+                  <a href={documentation.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    {documentation.link}
+                  </a>
+                </TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
                     <Button
                       onClick={() => {
                         reset()
-                        setSelectedSetting(setting)
-                        setValue("key", setting.key)
-                        // for string values we can set the value; for file-based keys we leave file input empty
-                        setValue("value", setting.value)
+                        setSelectedDocumentation(documentation)
+                        form.setValue("title", documentation.title)
+                        form.setValue("description", documentation.description)
+                        form.setValue("link", documentation.link)
                         setOpen(true)
                       }}
                     >
@@ -189,7 +183,7 @@ export default function GeneralSetting() {
                     <Button
                       variant="destructive"
                       onClick={() => {
-                        setSelectedSetting(setting)
+                        setSelectedDocumentation(documentation)
                         setConfirm(true)
                       }}
                     >Delete</Button>
@@ -198,10 +192,10 @@ export default function GeneralSetting() {
               </TableRow>
             ))}
             {
-              !settings?.data || settings.data.length === 0 ? (
+              !documentations?.data || documentations.data.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center">
-                    No settings found.
+                  <TableCell colSpan={4} className="text-center">
+                    No documentation found.
                   </TableCell>
                 </TableRow>
               ) : null
@@ -210,60 +204,54 @@ export default function GeneralSetting() {
         </Table>
 
         {/* Pagination */}
-        <Pagination data={settings} />
+        <Pagination data={documentations} />
 
         <Dialog open={open} onOpenChange={() => onClose()}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>
-                {selectedSetting ? "Edit Setting" : "Add Setting"}
+                {selectedDocumentation ? "Edit Documentation" : "Add Documentation"}
               </DialogTitle>
               <DialogDescription>
-                {selectedSetting ? "Edit the setting" : "Add a new setting"}
+                {selectedDocumentation ? "Edit the documentation" : "Add a new documentation"}
               </DialogDescription>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid gap-2 py-3">
                   <Label>
-                    Key
+                    Title
                   </Label>
                   <Input
-                    {...register("key")}
-                    placeholder="Enter key"
-                    disabled={!!selectedSetting}
-                    error={!!errors.key}
-                    msgError={errors.key?.message}
+                    {...register("title")}
+                    placeholder="Enter title"
+                    error={!!errors.title}
+                    msgError={errors.title?.message}
                   />
                 </div>
                 <div className="grid gap-2 py-3">
                   <Label>
-                    Value
+                    Description
                   </Label>
-                  {watchedKey === 'site_logo' ? (
-                    <div>
-                      <Input
-                        type="file"
-                        accept=".jpg,.jpeg,.png,.svg,image/*"
-                        {...register('value')}
-                      />
-                      {selectedSetting && selectedSetting.key === 'site_logo' && selectedSetting.value && (
-                        <div className="mt-2">
-                          <p className="text-sm">Current logo preview:</p>
-                          <img src={`/storage/${selectedSetting.value}`} alt="site logo" className="h-16 mt-1" />
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <Textarea
-                      {...register("value")}
-                      placeholder="Enter value"
-                      error={!!errors.value}
-                      msgError={!!errors.value?.message}
-                    />
-                  )}
+                  <Textarea
+                    {...register("description")}
+                    placeholder="Enter description"
+                    error={!!errors.description}
+                    msgError={errors.description?.message}
+                  />
+                </div>
+                <div className="grid gap-2 py-3">
+                  <Label>
+                    Link
+                  </Label>
+                  <Input
+                    {...register("link")}
+                    placeholder="Enter link (URL)"
+                    error={!!errors.link}
+                    msgError={errors.link?.message}
+                  />
                 </div>
                 <div className="w-full">
                   <Button type="submit" className="w-full mt-4" isLoading={isLoading}>
-                    {selectedSetting ? "Save Changes" : "Create Setting"}
+                    {selectedDocumentation ? "Save Changes" : "Create Documentation"}
                   </Button>
                 </div>
               </form>

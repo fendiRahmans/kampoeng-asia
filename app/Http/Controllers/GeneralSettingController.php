@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Storage;
 class GeneralSettingController extends Controller
 {
     // index
-    public function index()
+    public function index(Request $request)
     {
-        $settings = GeneralSetting::all();
+        $settings = GeneralSetting::orderBy('created_at', 'asc')
+            ->paginate(10); // 10 items per page
+
         return Inertia::render('settings/general-setting', [
             'settings' => $settings
         ]);

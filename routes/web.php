@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AchievementSettingController;
 use App\Http\Controllers\DocumentationController;
+use App\Http\Controllers\DocumentationSettingController;
 use App\Http\Controllers\GeneralSettingController;
 use App\Http\Controllers\HighlightSettingController;
 use App\Http\Controllers\HomeController;
@@ -125,6 +126,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         VisionMissionSettingController::class,
         'destroy'
     ])->name('vision-mission-settings.destroy');
+
+    // Documentation Settings
+    Route::get('documentation-settings', [
+        DocumentationSettingController::class,
+        'index'
+    ])->name('documentation-settings');
+    Route::post('documentation-settings', [
+        DocumentationSettingController::class,
+        'store'
+    ])->name('documentation-settings.store');
+    Route::put('documentation-settings/{documentation}', [
+        DocumentationSettingController::class,
+        'update'
+    ])->name('documentation-settings.update');
+    Route::delete('documentation-settings/{documentation}', [
+        DocumentationSettingController::class,
+        'destroy'
+    ])->name('documentation-settings.destroy');
 });
 
 require __DIR__ . '/settings.php';
