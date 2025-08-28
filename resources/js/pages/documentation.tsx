@@ -4,11 +4,32 @@ import LandingFooterLayout from "@/layouts/landing/landing-footer-layout";
 import LandingHeaderLayout from "@/layouts/landing/landing-header-layout";
 import { usePage } from "@inertiajs/react";
 import { Calendar, ExternalLink, FileText } from "lucide-react";
+import Pagination from "@/components/ui/pagination";
 
 type Setting = { id: number; key: string; value: string };
-type Props = { settings: Setting[] };
+type Documentation = { id: number; title: string; description: string; link: string, created_at: string };
+type PaginationData = {
+  current_page: number;
+  data: Documentation[];
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  links: Array<{
+    url: string | null;
+    label: string;
+    active: boolean;
+  }>;
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number;
+  total: number;
+};
+type Props = { settings: Setting[]; documentations: PaginationData };
 export default function DocumentationPage() {
-  const { settings } = usePage<Props>().props;
+  const { settings, documentations } = usePage<Props>().props;
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('id-ID', {
       year: 'numeric',
@@ -36,50 +57,62 @@ export default function DocumentationPage() {
         </section>
         <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* <div className="text-center py-16">
-              <FileText className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-              <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                Belum Ada Dokumentasi
-              </h3>
-              <p className="text-gray-500">
-                Dokumentasi akan ditampilkan di sini setelah ditambahkan oleh admin.
-              </p>
-            </div> */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card className="group hover:shadow-lg transition-all duration-300">
-                <CardHeader>
-                  <CardTitle className="flex items-start justify-between">
-                    <span className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                      Title
-                    </span>
-                    <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors flex-shrink-0 ml-2" />
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                    Description
+            {
+              !documentations || documentations.data.length === 0 ? (
+                <div className="text-center py-16">
+                  <FileText className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                  <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                    Belum Ada Dokumentasi
+                  </h3>
+                  <p className="text-gray-500">
+                    Dokumentasi akan ditampilkan di sini setelah ditambahkan oleh admin.
                   </p>
+                </div>
+              ) : null
+            }
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {
+                documentations.data.map((doc) => (
+                  <Card key={doc.id} className="group hover:shadow-lg transition-all duration-300">
+                    <CardHeader>
+                      <CardTitle className="flex items-start justify-between">
+                        <span className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                          {doc.title}
+                        </span>
+                        <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors flex-shrink-0 ml-2" />
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                        {doc.description}
+                      </p>
 
-                  <div className="flex items-center text-xs text-gray-500 mb-4">
-                    <Calendar className="w-4 h-4 mr-1" />
-                    <span>Ditambahkan: {formatDate("2023-01-01")}</span>
-                  </div>
+                      <div className="flex items-center text-xs text-gray-500 mb-4">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        <span>Ditambahkan: {formatDate(doc.created_at)}</span>
+                      </div>
 
-                  <Button
-                    className="w-full bg-gradient-to-r from-rt-primary to-rt-accent hover:from-rt-accent hover:to-rt-primary"
-                  >
-                    <a
-                      href={"https://ui.shadcn.com/docs/components/dialog"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center space-x-2"
-                    >
-                      <span>Buka Dokumen</span>
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
+                      <Button
+                        className="w-full bg-gradient-to-r from-rt-primary to-rt-accent hover:from-rt-accent hover:to-rt-primary"
+                      >
+                        <a
+                          href={doc.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center space-x-2"
+                        >
+                          <span>Buka Dokumen</span>
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))
+              }
+            </div>
+            {/* Pagination */}
+            <div className="mt-8">
+              <Pagination data={documentations} />
             </div>
           </div>
         </section>

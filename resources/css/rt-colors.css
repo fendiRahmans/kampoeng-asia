@@ -55,6 +55,11 @@
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
 }
 
+.to-rt-accent {
+  --tw-gradient-to: var(--rt-accent);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+}
+
 .from-rt-primary\/10 {
   --tw-gradient-from: color-mix(in srgb, var(--rt-primary) 10%, transparent);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
@@ -144,6 +149,10 @@
 
   .to-rt-primary\/20 {
     --tw-gradient-to: rgba(220, 38, 38, 0.2)
+  }
+
+  .to-rt-accent {
+    --tw-gradient-to: rgba(185, 28, 28, 1)
   }
 
   .border-rt-secondary\/30 {
