@@ -67,7 +67,7 @@ export default function HomePage() {
                       <CarouselItem key={highlight.id}>
                         <div className="bg-white rounded-2xl overflow-hidden">
                           <img
-                            src={highlight.image}
+                            src={`/storage/${highlight.image}`}
                             alt={highlight.title}
                             className="w-full h-64 lg:h-80 object-cover"
                           />
