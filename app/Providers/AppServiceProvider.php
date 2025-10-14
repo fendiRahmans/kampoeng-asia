@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use App\Models\GeneralSetting;
+use Illuminate\Support\Facades\Cache;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,10 +22,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Share general settings with all Inertia responses. Use a closure so it's resolved per request.
+        // Share general settings as a keyed map (['site_title' => '...']) and cache the result.
+        // Returning a keyed object makes it easier and more reliable to access in frontend.
         Inertia::share([
             'settings' => function () {
-                return GeneralSetting::all();
+                return Cache::remember('general_settings_keyed', 3600, function () {
+                    return GeneralSetting::all()->pluck('value', 'key')->toArray();
+                });
             },
         ]);
     }

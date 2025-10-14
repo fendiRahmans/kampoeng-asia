@@ -7,6 +7,8 @@ export default function AppLogo() {
 
     // safe accessor for settings; handles array, paginator ({ data: [] }), or keyed object
     const getSettingValue = (list: any, key: string) => {
+        console.log(list, key); // --- IGNORE ---
+
         if (!list) return null;
         if (Array.isArray(list)) return list.find((s: any) => s.key === key)?.value ?? null;
         if (list.data && Array.isArray(list.data)) return list.data.find((s: any) => s.key === key)?.value ?? null;
