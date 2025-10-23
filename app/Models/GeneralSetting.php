@@ -17,6 +17,26 @@ class GeneralSetting extends Model
         'updated_by'
     ];
 
+
+    static function boot(){
+        parent::boot();
+
+        static::created(function($model){
+            // delete cache
+            cache()->forget('general_settings');
+        });
+
+        static::updated(function($model){
+            // delete cache
+            cache()->forget('general_settings');
+        });
+
+        static::deleted(function($model){
+            // delete cache
+            cache()->forget('general_settings');
+        });
+    }
+
     /**
      * Get the user who created this setting.
      */

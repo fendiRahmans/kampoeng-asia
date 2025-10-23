@@ -39,7 +39,7 @@ export default function UserSettings() {
 
   // try to find a roles setting (comma separated or json) to populate role options
   const roleOptions = useMemo(() => {
-    const s = settings?.find((g: Setting) => g.key === 'roles' || g.key === 'user_roles');
+    const s = Array.isArray(settings) ? settings.find((g: Setting) => g.key === 'roles' || g.key === 'user_roles') : undefined;
     if (!s) return ['superadmin', 'admin'];
     try {
       // if value is JSON array
