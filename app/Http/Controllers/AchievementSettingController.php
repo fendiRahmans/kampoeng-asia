@@ -13,7 +13,11 @@ class AchievementSettingController extends Controller
     public function index()
     {
         // ambil 5 achievement terbaru berdasarkan created_at
-        $achievements = Achievement::orderBy('created_at', 'desc')->get();
+        $achievements = Achievement::with('createdBy')->orderBy('created_at', 'desc')->get();
+        $achievements->transform(function ($achievement) {
+            $achievement->createdBy = $achievement->createdBy?->name ?? 'System';
+            return $achievement;
+        });
         return Inertia::render('settings/achievement-setting', [
             'achievements' => $achievements
         ]);

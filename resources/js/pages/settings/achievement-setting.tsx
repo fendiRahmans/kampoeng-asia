@@ -28,7 +28,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   }
 ];
 
-type Achievement = { id: number; title: string; description: string; points: string; icon?: string };
+type Achievement = { id: number; title: string; description: string; points: string; createdBy: string; icon?: string };
 type Props = { achievements: Achievement[] };
 
 export default function AchievementSetting() {
@@ -130,6 +130,7 @@ export default function AchievementSetting() {
               <TableHead>Title</TableHead>
               <TableHead>Points</TableHead>
               <TableHead>Icon</TableHead>
+              <TableHead>Created By</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -145,6 +146,11 @@ export default function AchievementSetting() {
                   ) : (
                     <span className="text-sm text-muted-foreground">-</span>
                   )}
+                </TableCell>
+                <TableCell>
+                  <span className="text-sm text-muted-foreground">
+                    {a.createdBy}
+                  </span>
                 </TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
